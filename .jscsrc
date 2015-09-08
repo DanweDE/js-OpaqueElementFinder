@@ -1,0 +1,9 @@
+{
+  "preset": "wikimedia",
+  "maximumLineLength": 100,
+  "esnext": true,
+  "requireSpaceAfterKeywords": false,
+  "requireMultipleVarDecl": false,
+  "requireVarDeclFirst": false,
+  "requireSemicolons": true
+}
