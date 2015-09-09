@@ -1,0 +1,14 @@
+{
+  "framework": "mocha",
+  "src_files": [
+    "node_modules/babel-core/browser-polyfill.js'",
+    "node_modules/chai/chai.js",
+    "node_modules/sinon/pkg/sinon.js",
+    "node_modules/sinon-chai/lib/sinon-chai.js",
+    "tmp/__spec-build.js"
+  ],
+  "launch_in_dev": [
+    "Chromium",
+    "Firefox"
+  ]
+}

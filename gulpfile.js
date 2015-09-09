@@ -14,6 +14,7 @@ const esperanto = require( 'esperanto' );
 const browserify = require( 'browserify' );
 const runSequence = require( 'run-sequence' );
 const source = require( 'vinyl-source-stream' );
+const testem = require( 'testem' );
 
 // Gather the library data from `package.json`
 const manifest = require( './package.json' );
@@ -132,23 +133,6 @@ gulp.task( 'browserify', function() {
 	return bundle( getBundler() );
 } );
 
-function test() {
-	return gulp.src( [ 'test/setup/node.js', 'test/unit/**/*.js' ], {read: false} )
-		.pipe( $.mocha( {reporter: 'dot', globals: config.mochaGlobals} ) );
-}
-
-gulp.task( 'coverage', [ 'lint-src', 'lint-test' ], function( done ) {
-	require( 'babel-core/register' );
-	gulp.src( [ 'src/**/*.js' ] )
-		.pipe( $.istanbul( {instrumenter: isparta.Instrumenter} ) )
-		.pipe( $.istanbul.hookRequire() )
-		.on( 'finish', function() {
-			return test()
-				.pipe( $.istanbul.writeReports() )
-				.on( 'end', done );
-		} );
-} );
-
 // Lint and run our tests
 gulp.task( 'test', [ 'lint-src', 'lint-test' ], function() {
 	require( 'babel-core/register' );
@@ -161,22 +145,16 @@ gulp.task( 'build-in-sequence', function( callback ) {
 	runSequence( [ 'lint-src', 'lint-test' ], 'browserify', callback );
 } );
 
-// These are JS files that should be watched by Gulp. When running tests in the browser,
-// watchify is used instead, so these aren't included.
-const jsWatchFiles = [ 'src/**/*', 'test/**/*' ];
-// These are files other than JS files which are to be watched. They are always watched.
-const otherWatchFiles = [ 'package.json', '**/.eslintrc', '.jscsrc' ];
+const testemConfig = {
+	file: 'test/setup/testem.json'
+};
 
-// Run the headless unit tests as you make changes.
-gulp.task( 'watch', function() {
-	const watchFiles = jsWatchFiles.concat( otherWatchFiles );
-	gulp.watch( watchFiles, [ 'test' ] );
+gulp.task( 'test', [ 'build-in-sequence' ], function( done ) {
+	( new testem() ).startCI( testemConfig, done );
 } );
 
-// Set up a livereload environment for our spec runner
-gulp.task( 'test-browser', [ 'build-in-sequence' ], function() {
-	$.livereload.listen( {port: 35729, host: 'localhost', start: true} );
-	return gulp.watch( otherWatchFiles, [ 'build-in-sequence' ] );
+gulp.task( 'watch', [ 'build-in-sequence' ], function() {
+	( new testem() ).startDev( testemConfig );
 } );
 
 // An alias of test
