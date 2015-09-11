@@ -7,6 +7,10 @@
     "node_modules/sinon-chai/lib/sinon-chai.js",
     "tmp/__spec-build.js"
   ],
+  "css_files": [
+    "test/assets/test.css",
+    "test/assets/testElementsProperties.css"
+  ],
   "launch_in_dev": [
     "Chromium",
     "Firefox"

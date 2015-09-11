@@ -5,5 +5,4 @@ require( './setup' )();
 global.onload = function() {
 	global.mocha.checkLeaks();
 	global.mocha.globals( config.mochaGlobals );
-	global.mocha.run();
 };
