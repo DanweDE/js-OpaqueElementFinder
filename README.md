@@ -13,12 +13,14 @@ var oef = new OpaqueElementFinder();
 var opaqueElementFromPoint = oef.opaqueElementFromPoint.bind( oef ); // optional
 
 // Get element at x:1337, y:42 which is not transparent at that global coordinate: 
-opaqueElementFromPoint( 1337, 42 )
+opaqueElementFromPoint( 1337, 42 );
 
 // Same, but consider an opacity of 0.5 (alpha 127) as transparent.
-opaqueElementFromPoint( 1337, 42, "0.5" )
-opaqueElementFromPoint( 1337, 42, 127 )
+opaqueElementFromPoint( 1337, 42, "0.5" );
+opaqueElementFromPoint( 1337, 42, 127 );
 ```
+
+You can also find a little demonstration at `demo/index.html`.
 
 ## Which Elements are Considered Opaque?
 
@@ -44,6 +46,12 @@ This library covers some basic cases and might be extended to cover other cases 
 * Transparent elements containing text. The text might not be transparent but the whole element is considered transparent anyhow.
 * More css3 transformation types.
 * ...
+
+## Development
+Gulp is used for building and other tasks. Some tasks are:
+* `gulp build` - for building the `dist/` folder for publishing the library in UMD style.
+* `gulp test` - runs browser tests once with [testem](https://github.com/airportyh/testem).
+* `gulp watch` - continuously runs browser tests with testem.
 
 ## TODOs
 * Improve on opacity detection cases (cases above).
