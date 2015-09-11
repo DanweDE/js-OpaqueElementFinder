@@ -27,6 +27,8 @@ This library covers some basic cases and might be extended to cover other cases 
 
 ### Covered Cases
 * Transparent PNG and GIF images' as img-element's `src`.
+    * Images transformed by css3 transformation `scale()`.
+    * Images scaled by `width` and `height` different from original resolution`.
 * Element's `background-color`.
     * `rgba()`, `rgb()`, `#rgb`
     * color names (`transparent`, `red`, etc.)
@@ -35,13 +37,15 @@ This library covers some basic cases and might be extended to cover other cases 
 
 ### Cases not (yet) Covered
 * Combinations of `opacity`, `rgba()` and partially transparent images where the actual opacity level had to be calculated. Instead all of these have to be considered transparent for the element to be considered transparent.
+* Element's 
 * Canvas elements.
 * Transparent elements with non-transparent borders. Borders will be considered transparent if the element is considered transparent.
-* Padding on img-elements confuses calculation (**urgent**)
-* Transparent elements containing text. The text might not be transparent but the whole element is considered transparent anyhow. 
+* Padding on img-elements confuses calculation. (**urgent**)
+* Transparent elements containing text. The text might not be transparent but the whole element is considered transparent anyhow.
+* More css3 transformation types.
 * ...
 
-## TODOS
+## TODOs
 * Improve on opacity detection cases (cases above).
 * Extract some functionality in separate library for determining the opacity of an element at a certain point.
 * Add a `bower.json`.
