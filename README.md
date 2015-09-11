@@ -39,12 +39,12 @@ This library covers some basic cases and might be extended to cover other cases 
 
 ### Cases not (yet) Covered
 * Combinations of `opacity`, `rgba()` and partially transparent images where the actual opacity level had to be calculated. Instead all of these have to be considered transparent for the element to be considered transparent.
-* Element's 
 * Canvas elements.
 * Transparent elements with non-transparent borders. Borders will be considered transparent if the element is considered transparent.
 * Padding on img-elements confuses calculation. (**urgent**)
-* Transparent elements containing text. The text might not be transparent but the whole element is considered transparent anyhow.
-* More css3 transformation types.
+* Transparent elements containing opaque text. Currently the whole element is considered transparent, ignoring the text color.
+    * This might be the trickiest case and not worth the trouble if reliably possible at all.
+* css3 transformation types other than scale applied on images.
 * ...
 
 ## Development
@@ -54,8 +54,9 @@ Gulp is used for building and other tasks. Some tasks are:
 * `gulp watch` - continuously runs browser tests with testem.
 
 ## TODOs
-* Improve on opacity detection cases (cases above).
-* Extract some functionality in separate library for determining the opacity of an element at a certain point.
+* Improve on opacity detection
+    * Implement more of the cases above.
+    * Extract some functionality in separate library for determining the opacity of an element at a certain point.
 * Add a `bower.json`.
 * More tests and CI infrastructure.
     * Dynamically generate a list of working cases and their browser support.
