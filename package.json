@@ -1,6 +1,6 @@
 {
   "name": "opaque-element-finder",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Offers opaqueElementFromPoint(), same as document.elementFromPoint() but ignoring transparent objects at that point.",
   "main": "dist/OpaqueElementFinder.js",
   "scripts": {
