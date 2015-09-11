@@ -1,0 +1,134 @@
+body {
+  background: #fafafa;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+  margin: 0;
+}
+
+pre#info {
+	margin: 2em;
+	display: block;
+	float: left;
+}
+
+.surface {
+	position: relative;
+	height: 600px;
+	width: 350px;
+	background-color: gray;
+    float: left;
+    margin: 20px;
+    //transform: scale( 0.75 );
+    //transform-origin: top left;
+}
+
+.surface > * {
+  display: block;
+  position: absolute;
+  outline: 1px solid greenyellow;
+}
+.surface > *.opaqueElemHovered {
+  outline: 3px solid orange;
+}
+
+.test0 {
+  top: 10px;
+  left: 20px;
+  width: 300px;
+  height: 500px;
+}
+.test1 {
+  top: 230px;
+  left: 45px;
+  width: 340px;
+  height: 340px;
+}
+.test2 {
+  top: 50px;
+  left: 70px;
+  width: 80px;
+  height: 80px;
+}
+
+.test3 {
+  top: 90px;
+  left: 100px;
+  width: 120px;
+  height: 90px;
+}
+
+.test4 {
+  top: 70px;
+  left: 110px;
+  width: 120px;
+  height: 40px;
+}
+.test5 {
+  top: 200px;
+  left: 180px;
+  width: 160px;
+  height: 80px;
+  opacity: 0.5;
+}
+.test6 {
+  top: 130px;
+  left: 140px;
+  width: 120px;
+  height: 80px;
+  opacity: 0.05;
+}
+
+.test7 {
+  top: 240px;
+  left: 80px;
+  width: 120px;
+  height: 50px;
+  border: 10px solid cornflowerblue;
+}
+
+.test8, .test9 {
+  top: 270px;
+  left: 100px;
+  width: 100px;
+  height: 100px;
+  //border: 20px solid cornflowerblue;
+}
+.test8 {
+  //border-left: 21px solid cornflowerblue;
+}
+
+.test10 {
+  top: 220px;
+  left: 60px;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  background: url('images/b.png');
+  background-position: -10px -10px; /* or center, bottom left, etc. */
+  border: 3px solid blue;
+  background-size: 33px;
+}
+
+.test11 { /* transparent image + background-color */
+  background-color: white!important;
+  top: 420px;
+  left: 80px;
+  width: 50px;
+  height: 50px;
+}
+
+.test12 { /* colored box with alpha low enough to be ignored */
+  background-color: rgba(255, 0, 136, 0.05);
+  top: 460px;
+  left: 120px;
+  width: 40px;
+  height: 40px;
+}
+
+.test13 { /* colored box with alpha too high to be ignored */
+  background-color: rgba(255, 0, 136, 0.2);
+  top: 490px;
+  left: 150px;
+  width: 30px;
+  height: 30px;
+}
