@@ -50,11 +50,12 @@ This library covers some basic cases and might be extended to cover other cases 
 ## Development
 Gulp is used for building and other tasks. Some tasks are:
 * `gulp build` - for building the `dist/` folder for publishing the library in UMD style.
+* `gulp lint` - for linting all sources.
 * `gulp test` - runs browser tests once with [testem](https://github.com/airportyh/testem).
 * `gulp watch` - continuously runs browser tests with testem.
 
 ## TODOs
-* Improve on opacity detection
+* Improve opacity detection.
     * Implement more of the cases above.
     * Extract some functionality in separate library for determining the opacity of an element at a certain point.
 * Add a `bower.json`.

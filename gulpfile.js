@@ -15,6 +15,7 @@ const browserify = require( 'browserify' );
 const runSequence = require( 'run-sequence' );
 const source = require( 'vinyl-source-stream' );
 const testem = require( 'testem' );
+const extend = require( 'util' )._extend;
 
 // Gather the library data from `package.json`
 const manifest = require( './package.json' );
@@ -22,6 +23,9 @@ const config = manifest.babelBoilerplateOptions;
 const mainFile = manifest.main;
 const destinationFolder = path.dirname( mainFile );
 const exportFileName = path.basename( mainFile, path.extname( mainFile ) );
+
+const TESTEM_CI = 'startCI';
+const TESTEM_DEV = 'startDev';
 
 // Remove the built files
 gulp.task( 'clean', function( cb ) {
@@ -54,11 +58,12 @@ function createLintTask( taskName, files ) {
 	} );
 }
 
-// Lint our source code
 createLintTask( 'lint-src', [ 'src/**/*.js' ] );
-
-// Lint our test code
 createLintTask( 'lint-test', [ 'test/**/*.js' ] );
+createLintTask( 'lint-demo', [ 'demo/**/*.js' ] );
+
+// Lint everything
+gulp.task( 'lint', [ 'lint-test', 'lint-src', 'lint-demo' ] );
 
 // Build two versions of the library
 gulp.task( 'build', [ 'lint-src', 'clean' ], function( done ) {
@@ -111,13 +116,7 @@ function getBundler() {
 	var allFiles = [ './test/setup/browserify.js' ].concat( testFiles );
 
 	// Create our bundler, passing in the arguments required for watchify
-	var bundler = browserify( allFiles, watchify.args );
-
-	// Watch the bundler, and re-bundle it whenever files change
-	bundler = watchify( bundler );
-	bundler.on( 'update', function() {
-		bundle( bundler );
-	} );
+	var bundler = browserify( allFiles, extend( { debug: true }, watchify.args ) );
 
 	// Set up Babelify so that ES6 works in the tests
 	bundler.transform( babelify.configure( {
@@ -127,34 +126,41 @@ function getBundler() {
 	return bundler;
 };
 
-// Build the unit test suite for running tests
-// in the browser
+function watchifyBundler( bundler ) {
+	// Watch the bundler, and re-bundle it whenever files change
+	bundler = watchify( bundler );
+	bundler.on( 'update', function() {
+		bundle( bundler );
+	} );
+	return bundler;
+}
+
 gulp.task( 'browserify', function() {
 	return bundle( getBundler() );
 } );
 
-// Lint and run our tests
-gulp.task( 'test', [ 'lint-src', 'lint-test' ], function() {
-	require( 'babel-core/register' );
-	return test();
+gulp.task( 'browserify-watchify', function() {
+	return bundle( watchifyBundler( getBundler() ) );
 } );
 
 // Ensure that linting occurs before browserify runs. This prevents
 // the build from breaking due to poorly formatted code.
-gulp.task( 'build-in-sequence', function( callback ) {
-	runSequence( [ 'lint-src', 'lint-test' ], 'browserify', callback );
+gulp.task( 'build-in-sequence', function( done ) {
+	runSequence( [ 'lint-src', 'lint-test' ], 'browserify', done );
 } );
 
-const testemConfig = {
-	file: 'test/setup/testem.json'
-};
+function startTester( mode ) {
+	return function startTest() {
+		( new testem() )[ mode ]( { file: 'test/setup/testem.json' } );
+	}
+}
 
-gulp.task( 'test', [ 'build-in-sequence' ], function( done ) {
-	( new testem() ).startCI( testemConfig, done );
+gulp.task( 'test', function() {
+	runSequence( [ 'lint-src', 'lint-test' ], 'browserify', startTester( TESTEM_CI ) );
 } );
 
-gulp.task( 'watch', [ 'build-in-sequence' ], function() {
-	( new testem() ).startDev( testemConfig );
+gulp.task( 'watch', function() {
+	runSequence( [ 'lint-src', 'lint-test' ], 'browserify-watchify', startTester( TESTEM_DEV ) );
 } );
 
 // An alias of test
