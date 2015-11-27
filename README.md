@@ -7,7 +7,7 @@ In some cases, using SVG or Canvas directly might be more appropriate but this l
 
 ## Usage
 
-```
+```JavaScript
 var oef = new OpaqueElementFinder();
 
 var opaqueElementFromPoint = oef.opaqueElementFromPoint.bind( oef ); // optional
